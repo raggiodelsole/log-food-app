@@ -1,8 +1,5 @@
 #! /usr/bin/env node
 
-
-//todo: create custom user iterator ?? 
-//dodawanie userow??
 //remember to start this use: `node ./index.js`
 //starting this db stuff:  npx json-server ./db.json --port 3001
 const { default: axios } = require('axios');
@@ -33,7 +30,7 @@ readline.on('line', async line => {
                                 next() {
                                     const current = veganOnly[idx];
                                     idx++;
-                                    if (current) { //if it is undefined then it is false
+                                    if (current) {
                                         return { value: current, done: false };
                                     }
                                     else {
@@ -99,14 +96,10 @@ readline.on('line', async line => {
                             }
                         },
                     );
-
-
-
                 }
 
                 async function displayCalories(servingSize, food) {
                     const calories = food.calories;
-                    //here check values 
                     console.log(`${food.name} with serving size of ${servingSize} has a ${Number.parseFloat(
                         calories * parseInt(servingSize, 10)).toFixed()} calories. `);
                     const { data } = await axios.get('http://localhost:3001/users/1');
@@ -150,59 +143,8 @@ readline.on('line', async line => {
                         }
                         position = it.next();
                     }
-                    // readline.prompt();
                 })
                 break;
             }
-        case 'users': {
-            const { data } = await axios.get('http://localhost:3001/users');
-            // data.forEach(user => {
-            //     console.log(user.firstname + ' ' + user.lastname);
-            // });
-
-            readline.prompt();
-            break;
-        }
-        case 'iter': {
-            axios.get(`http://localhost:3001/users`).then(({ data }) => {
-                let idx = 0;
-                const proUserOnly = data.filter(user => {
-                    return user.id % 2 === 1;
-                })
-                for (let user of proUserOnly) {
-                    console.log(user.firstname + ' ' + user.lastname);
-                }
-                readline.prompt();
-            });
-            break;
-        }
-        case 'addUser': {
-            const { data } = await axios.get('http://localhost:3001/users');
-            const putBody = {
-                ...data,
-                [Date.now()]: {
-                    id: 4,
-                    firstname: 'Adam',
-                    lastname: 'Testowniak',
-                    email: 'test@test.com'
-
-                }
-
-            }
-            await axios.put(`http://localhost:3001/users`,
-                putBody,
-                {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
-            );
-            console.log('user poszedl w swiat!!!');
-            readline.prompt();
-
-        }
-
     }
 })
-
-
