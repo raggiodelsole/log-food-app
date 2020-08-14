@@ -19,14 +19,22 @@ readline.on('line', async line => {
                 const { data } = await axios.get(`http://localhost:3001/food`);
                 function* listVeganFood() {
 
-                    let idx = 0;
-                    const veganOnly = data.filter(food =>
-                        food.dietary_preferences.includes('vegan'),
-                    );
-                    while (veganOnly[idx]) {
-                        yield veganOnly[idx];
-                        idx++;
+                    try {
+
+                        let idx = 0;
+                        const veganOnly = data.filter(food =>
+                            food.dietary_preferences.includes('vegan'),
+                        );
+                        while (veganOnly[idx]) {
+                            yield veganOnly[idx];
+                            idx++;
+                        }
+                    } catch (error) {
+                        console.log('Something went wrong while listing vegan items', {
+                            error,
+                        });
                     }
+
                 }
 
                 for (let val of listVeganFood()) {
@@ -42,25 +50,36 @@ readline.on('line', async line => {
                 const it = data[Symbol.iterator]();
                 let actionIt;
 
+                function* actionGenerator() {
+                    try {
+
+                        const food = yield;
+                        const servingSize = yield askForServingSize();
+                        yield displayCalories(servingSize, food);
+                    }
+                    catch (error) {
+                        console.log({ error });
+                    }
+
+                }
                 function askForServingSize() {
                     readline.question(`How many servings did you eat? (as decimal: 1, 0.5, 1.25, etc) `,
                         servingSize => {
                             if (servingSize === 'nevermind' || servingSize === 'n') {
                                 actionIt.return();
-
-                            } else {
+                                
+                            }
+                            servingSize=parseFloat(servingSize);
+                            if (typeof servingSize !== 'number' || servingSize === NaN) {
+                                actionIt.throw('Please, numbers only');
+                            }
+                            else {
                                 actionIt.next(servingSize);
                             }
                         },
                     );
                 }
 
-                function* actionGenerator() {
-                    const food = yield;
-                    const servingSize = yield askForServingSize();
-                    yield displayCalories(servingSize, food);
-
-                }
 
                 async function displayCalories(servingSize, food) {
                     const calories = food.calories;
@@ -120,16 +139,25 @@ readline.on('line', async line => {
                 let totalCalories = 0;
 
                 function* getFoodLog() {
-                    yield* foodLog;
+                    try {
+                        yield* foodLog;
+                    } catch (error) {
+                        console.log('Error reading the food log', { error });
+                    }
                 }
+                const logIterator = getFoodLog();
 
-                for (const entry of getFoodLog()) {
+                for (const entry of logIterator) {
                     const timestamp = Object.keys(entry)[0];
                     if (isToday(new Date(Number(timestamp)))) {
                         console.log(
                             `${entry[timestamp].food}, ${entry[timestamp].servingSize} serving(s)`
                         )
                         totalCalories += entry[timestamp].calories;
+                        if (totalCalories >= 12000) {
+                            console.log(`Impressive! You've reached 12,000 calories`);
+                            logIterator.return();
+                        }
                     }
                 }
                 console.log('-------------------');

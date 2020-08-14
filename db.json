@@ -178,6 +178,62 @@
             "servingSize": "6",
             "calories": 984
           }
+        },
+        {
+          "1597407537295": {
+            "food": "chicken breast",
+            "servingSize": "20",
+            "calories": 2500
+          }
+        },
+        {
+          "1597407559631": {
+            "food": "apple",
+            "servingSize": "1000",
+            "calories": 88000
+          }
+        },
+        {
+          "1597407579799": {
+            "food": "lentils",
+            "servingSize": "100",
+            "calories": 23000
+          }
+        },
+        {
+          "1597407601356": {
+            "food": "whole milk",
+            "servingSize": "10",
+            "calories": 2400
+          }
+        },
+        {
+          "1597407619296": {
+            "food": "cheddar cheese",
+            "servingSize": "10",
+            "calories": 1200
+          }
+        },
+        {
+          "1597411681277": {
+            "food": "apple",
+            "servingSize": null,
+            "calories": null
+          }
+        },
+        {
+          "1597411710765": {
+            "food": "apple",
+            "servingSize": 2,
+            "calories": 176
+          }
+        },
+        {
+          "1597415278014": {
+            "food": "apple",
+            "servingSize": 2,
+            "calories": 176
+          }
         }
       ]
     },
