@@ -143,6 +143,41 @@
             "servingSize": "0.2",
             "calories": 0
           }
+        },
+        {
+          "1597335281759": {
+            "food": "apple",
+            "servingSize": "4",
+            "calories": 352
+          }
+        },
+        {
+          "1597398965611": {
+            "food": "apple",
+            "servingSize": "3",
+            "calories": 264
+          }
+        },
+        {
+          "1597398976790": {
+            "food": "almonds",
+            "servingSize": "4",
+            "calories": 656
+          }
+        },
+        {
+          "1597399126628": {
+            "food": "apple",
+            "servingSize": "5",
+            "calories": 440
+          }
+        },
+        {
+          "1597399134216": {
+            "food": "almonds",
+            "servingSize": "6",
+            "calories": 984
+          }
         }
       ]
     },
